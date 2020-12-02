@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-11-08 12:46:24
- * @LastEditTime: 2020-11-14 15:51:36
+ * @LastEditTime: 2020-12-02 11:31:09
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \vue-peoject\src\main.js
@@ -16,8 +16,8 @@ import './assets/css/gobal.css'
 import './assets/css/iconfont.css'
 // 使用axios
 import axios from 'axios'
-axios.defaults.baseURL = 'http://127.0.0.1:8888/api/private/v1/'
-//  axios.defaults.baseURL = 'http://localhost:3000/'
+// axios.defaults.baseURL = 'http://127.0.0.1:8888/api/private/v1/'
+ axios.defaults.baseURL = 'http://localhost:3000/'
 
 
 // 添加请求拦截器添加token

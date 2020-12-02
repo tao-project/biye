@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-11-08 13:13:24
- * @LastEditTime: 2020-11-11 14:59:25
+ * @LastEditTime: 2020-12-02 16:16:32
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \vue-peoject\src\components\login.vue
@@ -20,7 +20,19 @@
         :rules="rules"
         ref="formRef"
       >
-        <el-form-item label="用户名:" prop="username">
+        <!-- 账号类型选择 -->
+        <el-form-item label="类型" prop="value">
+          <el-select v-model="formData.value" placeholder="请选择">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="学号:" prop="username">
           <el-input v-model="formData.username"></el-input>
         </el-form-item>
         <el-form-item label="密码:" prop="password">
@@ -43,8 +55,17 @@ export default {
       formData: {
         username: "admin",
         password: "123456",
+        value: "", //选项框中的值
       },
+      options: [
+        { value: "0", label: "学生" },
+        { value: "1", label: "老师" },
+      ],
+
       rules: {
+        value: [
+          { required: true, message: "请选择账号类型", triggger: "change" },
+        ],
         username: [
           { required: true, message: "请输入用户名", trigger: "blur" },
           { min: 3, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" },
@@ -55,7 +76,16 @@ export default {
         ],
       },
     };
+    // 自定义下拉框验证
+    // const isSelect = (rule, value, callback) => {
+    //   if (value == "") {
+    //     return callback(new Error("请选择账号类型"));
+    //   } else {
+    //     callback();
+    //   }
+    // };
   },
+
   methods: {
     login: function () {
       this.$refs.formRef.validate(async (valid, err) => {
@@ -66,6 +96,9 @@ export default {
             "login",
             this.formData
           );
+          // 登录成功的数据
+          console.log(result.meta);
+          console.log(this.formData.value);
           if (result.meta.status == 200) {
             this.$message({
               type: "success",
@@ -74,9 +107,9 @@ export default {
             });
             console.log(result);
             // 将token保存到sessionStorage中
-            window.sessionStorage.setItem("token", result.data.token);
+            window.sessionStorage.setItem("token", result.meta.token);
             // 通过编程式路由导航跳转
-            this.$router.push("/home");
+            // this.$router.push("/home");
           } else {
             console.log("登录失败");
           }
@@ -99,8 +132,8 @@ export default {
   height: 100%;
 }
 .login_box {
-  width: 450px;
-  height: 300px;
+  width: 480px;
+  height: 330px;
   border-radius: 3px;
   background-color: #fff;
   position: absolute;
@@ -132,6 +165,9 @@ export default {
     width: 100%;
     padding: 0 20px;
     box-sizing: border-box;
+    .el-select {
+      width: 100%;
+    }
     // 提交按钮
     .form-btn {
       float: right;
