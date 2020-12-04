@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-11-08 13:13:24
- * @LastEditTime: 2020-12-02 20:12:55
+ * @LastEditTime: 2020-12-04 17:12:39
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \vue-peoject\src\components\login.vue
@@ -10,19 +10,25 @@
   <div class="login_container">
     <div class="login_box">
       <div class="portrait">
-        <img src="../assets/logo.png" alt="" />
+        <img src="../assets/img/xin.png" alt="" />
       </div>
       <!-- 表单区域 -->
       <el-form
-        label-width="80px"
         class="form-login"
         :model="formData"
         :rules="rules"
         ref="formRef"
+        label-width="60px"
+        label-position="left"
+        :hide-required-asterisk="true"
+        size="small"
       >
         <!-- 账号类型选择 -->
         <el-form-item label="类型" prop="value">
-          <el-select v-model="formData.value" placeholder="请选择">
+          <el-select
+            v-model="formData.value"
+            placeholder="请选择登录账号的类型"
+          >
             <el-option
               v-for="item in options"
               :key="item.value"
@@ -33,7 +39,7 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="学号" prop="username">
+        <el-form-item label="账号" prop="username">
           <el-input v-model="formData.username"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password">
@@ -42,7 +48,9 @@
         <el-form-item class="form-btn">
           <el-button type="success" @click="login">登录</el-button>
           <el-button type="primary" @click="resetForm">重置</el-button>
-          <a href="javascript:;" @click="zhuce">注册账号</a>
+          <div>
+            <a href="javascript:;" @click="zhuce">注册账号</a>
+          </div>
         </el-form-item>
       </el-form>
     </div>
@@ -50,14 +58,17 @@
     <el-dialog
       title="注册账号(学生)"
       :visible.sync="isDialogVisible"
-      width="510px"
+      width="400px"
     >
       <!-- 这是添加用户表单 -->
       <el-form
-        label-width="80px"
+        label-width="60px"
         :model="addUserData"
         :rules="addUserRules"
         ref="addUserRef"
+        label-position="left"
+        :hide-required-asterisk="true"
+        size="small"
       >
         <el-form-item label="账号" prop="username">
           <el-input v-model="addUserData.username"></el-input>
@@ -112,9 +123,9 @@ export default {
       },
       // options下拉框中的数据
       options: [
-        { value: "0", label: "学生" },
-        { value: "1", label: "老师" },
-        { value: "2", label: "管理员", disabled: true },
+        { value: "0", label: "学生账号登录" },
+        { value: "1", label: "老师账号登录" },
+        { value: "2", label: "管理员账号登录", disabled: true },
       ],
       // 登录验证
       rules: {
@@ -205,6 +216,11 @@ export default {
             "addUser",
             this.addUserData
           );
+          if (result.status == 200) {
+            this.$message({ type: "success", message: result.msg });
+            this.isDialogVisible = false;
+          } else this.$message({ type: "error", message: result.msg });
+          console.log(result);
         } else {
           return false;
         }
@@ -217,15 +233,15 @@ export default {
 
 <style lang="less" scoped>
 .login_container {
-  background-color: #2b4b6b;
+  background-color: #009fdc;
   width: 100%;
   height: 100%;
 }
 .login_box {
-  width: 480px;
-  height: 330px;
+  width: 400px;
+  height: 290px;
   border-radius: 3px;
-  background-color: #fff;
+  background-color: #007db7;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -236,8 +252,7 @@ export default {
     height: 130px;
     background-color: #fff;
     border-radius: 50%;
-    padding: 8px;
-    border: 1px solid black;
+    border: 1px solid transparent;
     box-shadow: 0 0 10px gray;
     position: absolute;
     left: 50%;
@@ -255,9 +270,7 @@ export default {
     width: 100%;
     padding: 0 20px;
     box-sizing: border-box;
-    label {
-      text-align: left;
-    }
+
     .el-select {
       width: 100%;
     }

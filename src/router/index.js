@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-11-08 12:46:24
- * @LastEditTime: 2020-11-12 21:42:49
+ * @LastEditTime: 2020-12-03 19:44:24
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \vue-peoject\src\router\index.js
@@ -35,7 +35,8 @@ const routes = [
 ]
 
 const router = new VueRouter({
-  routes
+  routes,
+  mode:'history'
 })
 // 挂载路由导航守卫
 router.beforeEach((to, from, next) => {
